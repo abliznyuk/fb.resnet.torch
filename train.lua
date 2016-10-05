@@ -10,7 +10,7 @@
 --
 
 local optim = require 'optim'
-
+local gnuplot = require 'gnuplot'
 local M = {}
 local Trainer = torch.class('resnet.Trainer', M)
 
@@ -29,7 +29,7 @@ function Trainer:__init(model, criterion, opt, optimState)
    self.params, self.gradParams = model:getParameters()
 end
 
-function Trainer:train(epoch, dataloader)
+function Trainer:train(epoch, dataloader, losses)
    -- Trains the model for a single epoch
    self.optimState.learningRate = self:learningRate(epoch)
 
@@ -71,6 +71,14 @@ function Trainer:train(epoch, dataloader)
 
       print((' | Epoch: [%d][%d/%d]    Time %.3f  Data %.3f  Err %1.4f  top1 %7.3f  top5 %7.3f'):format(
          epoch, n, trainSize, timer:time().real, dataTime, loss, top1, top5))
+      losses[#losses + 1] = loss
+      local plots = {{'Autoencoder', torch.linspace(1, #losses, #losses), torch.Tensor(losses), '-'}}
+      local training_name = ('Training_[%s].png'):format(self.opt.LR)
+      gnuplot.pngfigure(training_name)
+      gnuplot.plot(table.unpack(plots))
+      gnuplot.ylabel('Loss')
+      gnuplot.xlabel('Batch #')
+      gnuplot.plotflush()
 
       -- check that the storage didn't get changed do to an unfortunate getParameters call
       assert(self.params:storage() == self.model:parameters()[1]:storage())
