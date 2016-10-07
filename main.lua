@@ -50,6 +50,7 @@ for epoch = startEpoch, opt.nEpochs do
 
 
    local trainTop1, trainTop5, trainLoss = trainer:train(epoch, trainLoader, losses)
+   print(' * Train ', trainTop1, trainLoss)
 
    -- Run model on validation set
    local testTop1, testTop5 = trainer:test(epoch, valLoader)
@@ -59,7 +60,6 @@ for epoch = startEpoch, opt.nEpochs do
       bestModel = true
       bestTop1 = testTop1
       bestTop5 = testTop5
-      print(' * Train ', testTop1, trainLoss)
       print(' * Best model ', testTop1, testTop5)
    end
 
