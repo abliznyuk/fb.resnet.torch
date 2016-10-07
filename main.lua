@@ -59,6 +59,7 @@ for epoch = startEpoch, opt.nEpochs do
       bestModel = true
       bestTop1 = testTop1
       bestTop5 = testTop5
+      print(' * Train ', testTop1, trainLoss)
       print(' * Best model ', testTop1, testTop5)
    end
 

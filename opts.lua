@@ -49,6 +49,10 @@ function M.parse(arg)
    cmd:option('-optnet',          'false', 'Use optnet to reduce memory usage')
    cmd:option('-resetClassifier', 'false', 'Reset the fully connected layer for fine-tuning')
    cmd:option('-nClasses',         0,      'Number of classes in the dataset')
+   ---------- Logging options --------------------------------
+   cmd:option('-lossLog',        'loss.log',       'Name of loss values log file.')
+   cmd:option('-trainErrLog',    'train_err.log',  'Name of train error log file.')
+   cmd:option('-valErrLog',      'val_err.log',    'Name of val error log file.')
    cmd:text()
 
    local opt = cmd:parse(arg or {})
